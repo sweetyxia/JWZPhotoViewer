@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JWZPhotoViewer">
+            <connections>
+                <outlet property="centerPhotoView" destination="hRl-id-Ua1" id="cmP-il-4PN"/>
+                <outlet property="leftPhotoView" destination="MCT-U4-z7u" id="lIt-go-fCN"/>
+                <outlet property="pageControl" destination="QAg-Ve-kP1" id="VF7-n6-khr"/>
+                <outlet property="rightPhotoView" destination="D2t-R9-KEw" id="yP0-95-eAt"/>
+                <outlet property="scrollView" destination="lI4-Nn-LO3" id="GT1-OJ-0FN"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="wrapperView" destination="Agx-O3-W4w" id="k5q-3S-JOn"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lI4-Nn-LO3">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Agx-O3-W4w">
+                            <rect key="frame" x="0.0" y="0.0" width="960" height="568"/>
+                            <subviews>
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCT-U4-z7u" customClass="JWZPhotoView">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </scrollView>
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRl-id-Ua1" customClass="JWZPhotoView">
+                                    <rect key="frame" x="320" y="0.0" width="320" height="568"/>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </scrollView>
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D2t-R9-KEw" customClass="JWZPhotoView">
+                                    <rect key="frame" x="640" y="0.0" width="320" height="568"/>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </scrollView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="D2t-R9-KEw" firstAttribute="height" secondItem="MCT-U4-z7u" secondAttribute="height" id="1Ql-M3-jWY"/>
+                                <constraint firstItem="hRl-id-Ua1" firstAttribute="top" secondItem="Agx-O3-W4w" secondAttribute="top" id="5EN-bt-1De"/>
+                                <constraint firstItem="hRl-id-Ua1" firstAttribute="width" secondItem="MCT-U4-z7u" secondAttribute="width" id="6Py-fT-Pa6"/>
+                                <constraint firstAttribute="trailing" secondItem="D2t-R9-KEw" secondAttribute="trailing" id="CLv-4c-Tjr"/>
+                                <constraint firstAttribute="bottom" secondItem="MCT-U4-z7u" secondAttribute="bottom" id="CT7-Sm-VyD"/>
+                                <constraint firstItem="MCT-U4-z7u" firstAttribute="leading" secondItem="Agx-O3-W4w" secondAttribute="leading" id="Dlx-uH-3Na"/>
+                                <constraint firstItem="D2t-R9-KEw" firstAttribute="leading" secondItem="hRl-id-Ua1" secondAttribute="trailing" id="Jlf-zV-Dmr"/>
+                                <constraint firstItem="D2t-R9-KEw" firstAttribute="width" secondItem="MCT-U4-z7u" secondAttribute="width" id="LMm-vX-jif"/>
+                                <constraint firstItem="hRl-id-Ua1" firstAttribute="height" secondItem="MCT-U4-z7u" secondAttribute="height" id="VtN-B8-Zio"/>
+                                <constraint firstItem="D2t-R9-KEw" firstAttribute="top" secondItem="Agx-O3-W4w" secondAttribute="top" id="Wbz-mn-xtg"/>
+                                <constraint firstItem="MCT-U4-z7u" firstAttribute="top" secondItem="Agx-O3-W4w" secondAttribute="top" id="X6l-XO-oBB"/>
+                                <constraint firstAttribute="bottom" secondItem="hRl-id-Ua1" secondAttribute="bottom" id="ld1-gq-9zf"/>
+                                <constraint firstAttribute="bottom" secondItem="D2t-R9-KEw" secondAttribute="bottom" id="rWn-6C-x4Z"/>
+                                <constraint firstItem="hRl-id-Ua1" firstAttribute="leading" secondItem="MCT-U4-z7u" secondAttribute="trailing" id="sC2-8p-p1T"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Agx-O3-W4w" firstAttribute="width" secondItem="lI4-Nn-LO3" secondAttribute="width" multiplier="3" id="75A-Ge-tTG"/>
+                        <constraint firstItem="Agx-O3-W4w" firstAttribute="top" secondItem="lI4-Nn-LO3" secondAttribute="top" id="K8R-sb-ex8"/>
+                        <constraint firstAttribute="trailing" secondItem="Agx-O3-W4w" secondAttribute="trailing" id="T8z-Pj-Pgu"/>
+                        <constraint firstItem="Agx-O3-W4w" firstAttribute="height" secondItem="lI4-Nn-LO3" secondAttribute="height" id="ihb-2u-zAc"/>
+                        <constraint firstAttribute="bottom" secondItem="Agx-O3-W4w" secondAttribute="bottom" id="qfC-Dl-o5X"/>
+                        <constraint firstItem="Agx-O3-W4w" firstAttribute="leading" secondItem="lI4-Nn-LO3" secondAttribute="leading" id="vNQ-Jb-hVx"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="AUU-8q-wz9"/>
+                    </connections>
+                </scrollView>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="QAg-Ve-kP1">
+                    <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="6bh-tT-4i2"/>
+                    </constraints>
+                </pageControl>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="lI4-Nn-LO3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8Fv-ed-EEI"/>
+                <constraint firstItem="lI4-Nn-LO3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Fft-1k-Eeq"/>
+                <constraint firstItem="QAg-Ve-kP1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Mwv-NZ-eii"/>
+                <constraint firstAttribute="bottom" secondItem="lI4-Nn-LO3" secondAttribute="bottom" id="bVY-hF-0Ac"/>
+                <constraint firstAttribute="bottom" secondItem="QAg-Ve-kP1" secondAttribute="bottom" id="cho-po-AhX"/>
+                <constraint firstAttribute="trailing" secondItem="QAg-Ve-kP1" secondAttribute="trailing" id="jeX-Dy-Tfo"/>
+                <constraint firstAttribute="trailing" secondItem="lI4-Nn-LO3" secondAttribute="trailing" id="pfe-ff-siF"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="317" y="339"/>
+        </view>
+    </objects>
+</document>
