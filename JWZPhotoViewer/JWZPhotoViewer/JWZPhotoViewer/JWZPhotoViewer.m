@@ -74,7 +74,7 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
 }
 
 - (BOOL)prefersStatusBarHidden {
-    return YES;
+    return NO;
 }
 
 /*
@@ -130,5 +130,12 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
     NSInteger count = [[self dataSource] numberOfItemsForPhotoViewer:self];
     return ABS(index + direction + count) % count;
 }
+
+#pragma mark - Center View Tap Action
+
+- (IBAction)tapToDismissPhotoViewer:(id)sender {
+    [self dismissViewControllerAnimated:NO completion:NULL];
+}
+
 
 @end

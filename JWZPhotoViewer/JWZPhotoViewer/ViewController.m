@@ -9,9 +9,11 @@
 #import "ViewController.h"
 
 #import "JWZPhotoViewer.h"
+#import "JWZSudokuView.h"
 
-@interface ViewController () <JWZPhotoViewerDataSource>
+@interface ViewController () <JWZPhotoViewerDataSource, JWZSudokuViewDelegate>
 
+@property (weak, nonatomic) IBOutlet JWZSudokuView *sudokuView;
 @property (nonatomic, strong) NSArray *dataArray;
 
 @end
@@ -20,6 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     self.dataArray = @[
                        @"http://funsbar.image.alimmdn.com/image/E8761596C917428AAE286C3464BBC34E.png?0",
                        @"http://h.hiphotos.baidu.com/image/pic/item/4ec2d5628535e5dd2820232370c6a7efce1b623a.jpg?1",
@@ -35,15 +38,15 @@
                        @"http://img4.duitang.com/uploads/item/201409/16/20140916103123_343c3.jpeg?11",
                        @"http://v1.qzone.cc/avatar/201407/25/20/52/53d253192be47412.jpg%21200x200.jpg?12"
                        ];
+    [self.sudokuView setContentWithImageUrls:_dataArray placeholder:nil];
+    _sudokuView.delegate = self;
     // Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    JWZPhotoViewer *viewer = [[JWZPhotoViewer alloc] init];
-    viewer.dataSource = self;
-    [self presentViewController:viewer animated:YES completion:NULL];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,6 +65,15 @@
 
 - (NSString *)photoViewer:(JWZPhotoViewer *)photoViewer thumbnailURLForItemAtIndex:(NSInteger)index {
     return [self.dataArray objectAtIndex:index];
+}
+
+- (void)sudokuView:(JWZSudokuView *)sudokuView didTouchOnImageView:(UIImageView *)imageView atIndex:(NSInteger)index {
+    JWZPhotoViewer *viewer = [[JWZPhotoViewer alloc] init];
+    viewer.defaultIndex = index;
+    viewer.dataSource = self;
+    self.definesPresentationContext = YES;
+    viewer.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    [self presentViewController:viewer animated:NO completion:NULL];
 }
 
 @end

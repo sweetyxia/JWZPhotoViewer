@@ -22,10 +22,10 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lI4-Nn-LO3">
+                <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lI4-Nn-LO3">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Agx-O3-W4w">
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Agx-O3-W4w">
                             <rect key="frame" x="0.0" y="0.0" width="960" height="568"/>
                             <subviews>
                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCT-U4-z7u" customClass="JWZPhotoView">
@@ -35,6 +35,9 @@
                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hRl-id-Ua1" customClass="JWZPhotoView">
                                     <rect key="frame" x="320" y="0.0" width="320" height="568"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="vhH-SM-6xS" appends="YES" id="rW4-A1-buh"/>
+                                    </connections>
                                 </scrollView>
                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D2t-R9-KEw" customClass="JWZPhotoView">
                                     <rect key="frame" x="640" y="0.0" width="320" height="568"/>
@@ -60,7 +63,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="Agx-O3-W4w" firstAttribute="width" secondItem="lI4-Nn-LO3" secondAttribute="width" multiplier="3" id="75A-Ge-tTG"/>
                         <constraint firstItem="Agx-O3-W4w" firstAttribute="top" secondItem="lI4-Nn-LO3" secondAttribute="top" id="K8R-sb-ex8"/>
@@ -81,7 +84,7 @@
                     </constraints>
                 </pageControl>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="lI4-Nn-LO3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8Fv-ed-EEI"/>
                 <constraint firstItem="lI4-Nn-LO3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Fft-1k-Eeq"/>
@@ -94,5 +97,10 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="317" y="339"/>
         </view>
+        <tapGestureRecognizer id="vhH-SM-6xS">
+            <connections>
+                <action selector="tapToDismissPhotoViewer:" destination="-1" id="kbL-jt-s5b"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AF4527E51C4FEC690007D64A /* JWZSudokuView.m in Sources */ = {isa = PBXBuildFile; fileRef = AF4527E41C4FEC690007D64A /* JWZSudokuView.m */; };
 		AF46AB831C4B937600D87A52 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AF46AB821C4B937600D87A52 /* main.m */; };
 		AF46AB861C4B937600D87A52 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AF46AB851C4B937600D87A52 /* AppDelegate.m */; };
 		AF46AB891C4B937600D87A52 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF46AB881C4B937600D87A52 /* ViewController.m */; };
@@ -35,6 +36,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AF4527E31C4FEC690007D64A /* JWZSudokuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWZSudokuView.h; sourceTree = "<group>"; };
+		AF4527E41C4FEC690007D64A /* JWZSudokuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWZSudokuView.m; sourceTree = "<group>"; };
 		AF46AB7E1C4B937600D87A52 /* JWZPhotoViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JWZPhotoViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF46AB821C4B937600D87A52 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AF46AB841C4B937600D87A52 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -96,6 +99,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AF4527E21C4FEC690007D64A /* JWZSudokuView */ = {
+			isa = PBXGroup;
+			children = (
+				AF4527E31C4FEC690007D64A /* JWZSudokuView.h */,
+				AF4527E41C4FEC690007D64A /* JWZSudokuView.m */,
+			);
+			path = JWZSudokuView;
+			sourceTree = "<group>";
+		};
 		AF46AB751C4B937600D87A52 = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +127,7 @@
 		AF46AB801C4B937600D87A52 /* JWZPhotoViewer */ = {
 			isa = PBXGroup;
 			children = (
+				AF4527E21C4FEC690007D64A /* JWZSudokuView */,
 				AF46ABA91C4C031700D87A52 /* SDWebImage */,
 				AF46AB981C4B939500D87A52 /* JWZPhotoViewer */,
 				AF46AB841C4B937600D87A52 /* AppDelegate.h */,
@@ -269,6 +282,7 @@
 				AF46ABD31C4C031700D87A52 /* SDWebImagePrefetcher.m in Sources */,
 				AF46AB861C4B937600D87A52 /* AppDelegate.m in Sources */,
 				AF46ABCF1C4C031700D87A52 /* SDWebImageDecoder.m in Sources */,
+				AF4527E51C4FEC690007D64A /* JWZSudokuView.m in Sources */,
 				AF46ABD01C4C031700D87A52 /* SDWebImageDownloader.m in Sources */,
 				AF46AB831C4B937600D87A52 /* main.m in Sources */,
 				AF46ABD21C4C031700D87A52 /* SDWebImageManager.m in Sources */,

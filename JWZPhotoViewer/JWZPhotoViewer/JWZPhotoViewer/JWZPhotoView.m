@@ -43,8 +43,12 @@
 }
 
 - (void)setDelegate:(id<UIScrollViewDelegate>)delegate {
-    NSException *exception = [NSException exceptionWithName:@"禁止调用的方法" reason:@"视图的代理方法已经处理，禁止设置此属性。" userInfo:nil];
-    @throw exception;
+    if (delegate == nil) {
+        [super setDelegate:delegate];
+    } else {
+        NSException *exception = [NSException exceptionWithName:@"禁止调用的方法" reason:@"视图的代理方法已经处理，禁止设置此属性。" userInfo:nil];
+        @throw exception;
+    }
 }
 
 - (UIImageView *)imageView {
