@@ -59,20 +59,22 @@
     return self.dataArray.count;
 }
 
-- (NSString *)photoViewer:(JWZPhotoViewer *)photoViewer imageURLForItemAtIndex:(NSInteger)index {
-    return [self.dataArray objectAtIndex:index];
+- (NSURL *)photoViewer:(JWZPhotoViewer *)photoViewer imageURLForItemAtIndex:(NSInteger)index {
+    NSURL *url = [NSURL URLWithString:[self.dataArray objectAtIndex:index]];
+    return url;
 }
 
-- (NSString *)photoViewer:(JWZPhotoViewer *)photoViewer thumbnailURLForItemAtIndex:(NSInteger)index {
-    return [self.dataArray objectAtIndex:index];
+- (NSURL *)photoViewer:(JWZPhotoViewer *)photoViewer thumbnailURLForItemAtIndex:(NSInteger)index {
+    NSURL *url = [NSURL URLWithString:[self.dataArray objectAtIndex:index]];
+    return url;
 }
 
 - (void)sudokuView:(JWZSudokuView *)sudokuView didTouchOnImageView:(UIImageView *)imageView atIndex:(NSInteger)index {
     JWZPhotoViewer *viewer = [[JWZPhotoViewer alloc] init];
-    viewer.defaultIndex = index;
-    viewer.dataSource = self;
+    viewer.defaultIndex             = index;
+    viewer.dataSource               = self;
     self.definesPresentationContext = YES;
-    viewer.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    viewer.modalPresentationStyle   = UIModalPresentationOverCurrentContext;
     [self presentViewController:viewer animated:NO completion:NULL];
 }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -13,6 +13,7 @@
                 <outlet property="pageControl" destination="QAg-Ve-kP1" id="VF7-n6-khr"/>
                 <outlet property="rightPhotoView" destination="D2t-R9-KEw" id="yP0-95-eAt"/>
                 <outlet property="scrollView" destination="lI4-Nn-LO3" id="GT1-OJ-0FN"/>
+                <outlet property="tap" destination="vhH-SM-6xS" id="NDe-B0-HGE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="wrapperView" destination="Agx-O3-W4w" id="k5q-3S-JOn"/>
             </connections>
@@ -22,10 +23,10 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lI4-Nn-LO3">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lI4-Nn-LO3">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
-                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Agx-O3-W4w">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Agx-O3-W4w">
                             <rect key="frame" x="0.0" y="0.0" width="960" height="568"/>
                             <subviews>
                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCT-U4-z7u" customClass="JWZPhotoView">
@@ -36,7 +37,7 @@
                                     <rect key="frame" x="320" y="0.0" width="320" height="568"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <connections>
-                                        <outletCollection property="gestureRecognizers" destination="vhH-SM-6xS" appends="YES" id="rW4-A1-buh"/>
+                                        <outletCollection property="gestureRecognizers" destination="vhH-SM-6xS" appends="YES" id="ReL-bO-2NZ"/>
                                     </connections>
                                 </scrollView>
                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D2t-R9-KEw" customClass="JWZPhotoView">
@@ -63,7 +64,6 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="Agx-O3-W4w" firstAttribute="width" secondItem="lI4-Nn-LO3" secondAttribute="width" multiplier="3" id="75A-Ge-tTG"/>
                         <constraint firstItem="Agx-O3-W4w" firstAttribute="top" secondItem="lI4-Nn-LO3" secondAttribute="top" id="K8R-sb-ex8"/>
@@ -84,7 +84,7 @@
                     </constraints>
                 </pageControl>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="lI4-Nn-LO3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8Fv-ed-EEI"/>
                 <constraint firstItem="lI4-Nn-LO3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Fft-1k-Eeq"/>

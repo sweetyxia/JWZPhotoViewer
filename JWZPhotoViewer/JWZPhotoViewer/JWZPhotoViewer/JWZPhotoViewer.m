@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
 
 @property (nonatomic, strong) UIImageView *thumbnailImageView;
 
-@property (nonatomic, readonly) CGSize contentSize;
+@property (strong, nonatomic) IBOutlet UITapGestureRecognizer *tap;
 
 @end
 
@@ -42,6 +42,8 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
 //    self.rightPhotoView.backgroundColor = [UIColor greenColor];
     
     NSLog(@"%s, %@", __func__, NSStringFromCGRect(self.view.bounds));
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,18 +61,13 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     NSLog(@"%s, %@", __func__, NSStringFromCGRect(self.view.bounds));
-    _contentSize = self.view.bounds.size;
-    CGPoint point = CGPointMake(_contentSize.width, 0);
-    self.scrollView.contentOffset = point;
-    NSInteger index = _defaultIndex;
-    NSString *url = [_dataSource photoViewer:self imageURLForItemAtIndex:index];
-    [_centerPhotoView setImageWithUrl:[NSURL URLWithString:url]];
-    index = [self indexForCurrentItemWithPreviousIndex:_defaultIndex scrollDirection:(JWZPhotoViewerScrollLeft)];
-    url = [_dataSource photoViewer:self imageURLForItemAtIndex:index];
-    [_leftPhotoView setImageWithUrl:[NSURL URLWithString:url]];
-    index = [self indexForCurrentItemWithPreviousIndex:_defaultIndex scrollDirection:(JWZPhotoViewerScrollRight)];
-    url = [_dataSource photoViewer:self imageURLForItemAtIndex:index];
-    [_rightPhotoView setImageWithUrl:[NSURL URLWithString:url]];
+    self.pageControl.numberOfPages = [[self dataSource] numberOfItemsForPhotoViewer:self];
+    self.pageControl.currentPage = self.defaultIndex;
+    self.scrollView.contentOffset = CGPointMake(self.view.bounds.size.width, 0);
+    [self scrollViewDidEndDecelerating:self.scrollView];
+    
+    
+    [self.tap requireGestureRecognizerToFail:self.centerPhotoView->_twiceTap];
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -103,30 +100,33 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView == _scrollView) {
-        JWZPhotoViewerScrollDirection scrollDirection = floor(scrollView.contentOffset.x / _contentSize.width) - 1;
-        if (scrollDirection != JWZPhotoViewerScrollNone) {
-            NSInteger previousIndex = self.pageControl.currentPage;
-            NSInteger currentIndex = [self indexForCurrentItemWithPreviousIndex:previousIndex scrollDirection:scrollDirection];
-            self.pageControl.currentPage = currentIndex;
-            JWZPhotoView *firstPhotoView = nil, *secondPhotoView = nil;
-            if (scrollDirection == JWZPhotoViewerScrollLeft) {
-                firstPhotoView = _rightPhotoView;
-                secondPhotoView = _leftPhotoView;
-            } else {
-                firstPhotoView = _leftPhotoView;
-                secondPhotoView = _rightPhotoView;
-            }
-            [firstPhotoView setImageWithUrl:_centerPhotoView.imageUrl];
-            [_centerPhotoView setImageWithUrl:secondPhotoView.imageUrl];
-            self.scrollView.contentOffset = CGPointMake(_contentSize.width, 0);
-            NSInteger nextIndex = [self indexForCurrentItemWithPreviousIndex:currentIndex scrollDirection:scrollDirection];
-            NSString *url = [_dataSource photoViewer:self imageURLForItemAtIndex:nextIndex];
-            [secondPhotoView setImageWithUrl:[NSURL URLWithString:url]];
-        }
+        // 根据位置判断滚动方向
+        JWZPhotoViewerScrollDirection scrollDirection = floor(scrollView.contentOffset.x / self.view.bounds.size.width) - 1;
+        
+        // 计算出每张图片的索引
+        NSInteger previousCenterIndex = self.pageControl.currentPage;
+        NSInteger centerIndex = [self indexWithPreviousIndex:previousCenterIndex scrollDirection:scrollDirection];
+        NSInteger rightIndex = [self indexWithPreviousIndex:centerIndex scrollDirection:(JWZPhotoViewerScrollRight)];
+        NSInteger leftIndex = [self indexWithPreviousIndex:centerIndex scrollDirection:(JWZPhotoViewerScrollLeft)];
+        
+        // 更改 pageControl 的值
+        self.pageControl.currentPage = centerIndex;
+        
+        // 通过代理获取要显示的图片的 URL，并设置图片
+        NSURL *rightURL  = [self.dataSource photoViewer:self imageURLForItemAtIndex:rightIndex];
+        NSURL *centerURL = [self.dataSource photoViewer:self imageURLForItemAtIndex:centerIndex];
+        NSURL *leftURL   = [self.dataSource photoViewer:self imageURLForItemAtIndex:leftIndex];
+        
+        [self.rightPhotoView setImageWithURL:rightURL placeholder:nil];
+        [self.centerPhotoView setImageWithURL:centerURL placeholder:nil];
+        [self.leftPhotoView setImageWithURL:leftURL placeholder:nil];
+        
+        // 将位置重置到中间
+        self.scrollView.contentOffset = CGPointMake(self.view.bounds.size.width, 0);
     }
 }
 
-- (NSInteger)indexForCurrentItemWithPreviousIndex:(NSInteger)index scrollDirection:(JWZPhotoViewerScrollDirection)direction {
+- (NSInteger)indexWithPreviousIndex:(NSInteger)index scrollDirection:(JWZPhotoViewerScrollDirection)direction {
     NSInteger count = [[self dataSource] numberOfItemsForPhotoViewer:self];
     return ABS(index + direction + count) % count;
 }

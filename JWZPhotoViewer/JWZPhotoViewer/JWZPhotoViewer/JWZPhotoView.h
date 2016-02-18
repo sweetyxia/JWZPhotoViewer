@@ -10,23 +10,35 @@
 
 @class JWZPhotoView;
 
-@protocol JWZPhotoViewImageWatcher <UIScrollViewDelegate>
+@protocol JWZPhotoViewDelegate <NSObject>
 
-- (void)photoView:(JWZPhotoView *)photoView downloadImageWithProgress:(NSInteger)progress;
 - (BOOL)photoViewShouldSaveImageToAlbum:(JWZPhotoView *)photoView;
 - (void)photoViewDidSaveImageToAlbum:(JWZPhotoView *)photoView;
 
-
 @end
 
-@interface JWZPhotoView : UIScrollView
+@interface JWZPhotoView : UIScrollView {
+    @public
+    UITapGestureRecognizer *_twiceTap;
+    UILongPressGestureRecognizer *_longTap;
+}
 
-@property (nonatomic, weak) id<JWZPhotoViewImageWatcher> imageWatcher;
+@property (nonatomic, weak) id<JWZPhotoViewDelegate> imageWatcher;
 
+/**
+ *  当前显示的图片
+ *
+ *  @return 图片
+ */
 - (UIImage *)image;
 - (void)setImage:(UIImage *)image;
 
-- (NSURL *)imageUrl;
-- (void)setImageWithUrl:(NSURL *)url;
+/**
+ *  通过 URL 设置要显示的图片。
+ *
+ *  @param url         图片的URL
+ *  @param placeholder 在图片下载完成前显示的占位图
+ */
+- (void)setImageWithURL:(NSURL *)url placeholder:(UIImage *)placeholder;
 
 @end

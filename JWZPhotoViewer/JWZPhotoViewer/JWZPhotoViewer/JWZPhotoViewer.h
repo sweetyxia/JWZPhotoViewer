@@ -13,8 +13,8 @@
 @protocol JWZPhotoViewerDataSource <NSObject>
 
 - (NSInteger)numberOfItemsForPhotoViewer:(JWZPhotoViewer *)photoViewer;
-- (NSString *)photoViewer:(JWZPhotoViewer *)photoViewer thumbnailURLForItemAtIndex:(NSInteger)index;
-- (NSString *)photoViewer:(JWZPhotoViewer *)photoViewer imageURLForItemAtIndex:(NSInteger)index;
+- (NSURL *)photoViewer:(JWZPhotoViewer *)photoViewer thumbnailURLForItemAtIndex:(NSInteger)index;
+- (NSURL *)photoViewer:(JWZPhotoViewer *)photoViewer imageURLForItemAtIndex:(NSInteger)index;
 
 @end
 

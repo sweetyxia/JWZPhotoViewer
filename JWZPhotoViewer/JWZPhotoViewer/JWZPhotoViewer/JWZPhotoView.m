@@ -7,13 +7,11 @@
 //
 
 #import "JWZPhotoView.h"
-#import "UIImageView+WebCache.h"
+#import "SDWebImageManager.h"
 
 @interface JWZPhotoView () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIImageView *imageView;
-
-@property (nonatomic, strong) NSURL *imageUrl;
 
 @end
 
@@ -23,25 +21,36 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil) {
-
+        [self viewDidInitialize];
     }
     return self;
 }
 
-- (void)initialize {
-    self.maximumZoomScale = CGFLOAT_MAX;
-    self.minimumZoomScale = 0.5;
-    self.bounces = YES;
+/**
+ *  视图初始化的一些操作
+ */
+- (void)viewDidInitialize {
+    self.maximumZoomScale       = CGFLOAT_MAX;
+    self.minimumZoomScale       = 0.5;
+    self.bounces                = YES;
     self.alwaysBounceHorizontal = YES;
-    self.alwaysBounceVertical = YES;
+    self.alwaysBounceVertical   = YES;
     [super setDelegate:self];
 }
 
+/**
+ *  从 nib 中加载的
+ */
 - (void)awakeFromNib {
     [super awakeFromNib];
-    [self initialize];
+    [self viewDidInitialize];
 }
 
+/**
+ *  重写代理的 setter 方法。本类的代理方法由自己实现。
+ *
+ *  @param delegate 代理
+ */
 - (void)setDelegate:(id<UIScrollViewDelegate>)delegate {
     if (delegate == nil) {
         [super setDelegate:delegate];
@@ -51,6 +60,11 @@
     }
 }
 
+/**
+ *  要显示的图片容器。
+ *
+ *  @return UIImageView
+ */
 - (UIImageView *)imageView {
     if (_imageView != nil) {
         return _imageView;
@@ -58,6 +72,9 @@
     _imageView = [[UIImageView alloc] init];
     [self addSubview:_imageView];
     
+    /**
+     *  添加长按手势和双击手势
+     */
     _imageView.userInteractionEnabled = YES;
     UILongPressGestureRecognizer *longTap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longTapAction:)];
     longTap.minimumPressDuration = 3.0;
@@ -66,14 +83,21 @@
     twiceTap.numberOfTapsRequired = 2;
     [_imageView addGestureRecognizer:twiceTap];
     
+    _longTap = longTap;
+    _twiceTap = twiceTap;
+    
     return _imageView;
 }
 
+/**
+ *  设置要显示的图像
+ *
+ *  @param image UIImage 对象
+ */
 - (void)setImage:(UIImage *)image {
     [self.imageView setImage:image];
     self.zoomScale = 1.0;
     if (image != nil) {
-
         CGSize imageSize = image.size;
         CGSize selfSize = self.frame.size;
         
@@ -82,39 +106,14 @@
         
         if (selfAspectRatio < imageAspectRatio) {
             CGFloat height = imageSize.height * selfSize.width / imageSize.width;
-            _imageView.frame = CGRectMake(0, (selfSize.height - height) / 2.0, selfSize.width, height);
+            self.imageView.frame = CGRectMake(0, (selfSize.height - height) / 2.0, selfSize.width, height);
         } else if (selfAspectRatio > imageAspectRatio) {
             CGFloat width = imageSize.width * selfSize.height / imageSize.height;
-            _imageView.frame = CGRectMake((selfSize.width - width) / 2.0, 0, width, selfSize.height);
+            self.imageView.frame = CGRectMake((selfSize.width - width) / 2.0, 0, width, selfSize.height);
         } else {
-            _imageView.frame = CGRectMake(0, 0, selfSize.width, selfSize.height);
+            self.imageView.frame = CGRectMake(0, 0, selfSize.width, selfSize.height);
         }
         self.contentSize = selfSize;
-    }
-}
-
-- (void)setImageWithUrl:(NSURL *)url {
-    self.imageUrl = url;
-    SDImageCache *imageCache = [SDImageCache sharedImageCache];
-    UIImage *cachedImage = [imageCache imageFromDiskCacheForKey:url.absoluteString];
-    if (cachedImage != nil) {
-        [self setImage:cachedImage];
-    } else {
-        SDWebImageDownloaderProgressBlock progress = NULL;
-        if (self.imageWatcher != nil) {
-            progress = ^(NSInteger receivedSize, NSInteger expectedSize) {
-                NSInteger percent = receivedSize * 100.0 / expectedSize;
-                [[self imageWatcher] photoView:self downloadImageWithProgress:(NSInteger)percent];
-            };
-        }
-        
-        [[SDWebImageManager sharedManager] downloadImageWithURL:url options:(0) progress:progress completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-            if (image != nil) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self setImage:image];
-                });
-            }
-        }];
     }
 }
 
@@ -122,12 +121,40 @@
     return _imageView.image;
 }
 
+/**
+ *  加载网络图片的方法
+ *
+ *  @param url 图片的 URL
+ */
+- (void)setImageWithURL:(NSURL *)url placeholder:(UIImage *)placeholder {
+    SDImageCache *imageCache = [SDImageCache sharedImageCache];
+    UIImage *cachedImage = [imageCache imageFromDiskCacheForKey:url.absoluteString];
+    if (cachedImage != nil) {
+        [self setImage:cachedImage];
+    } else {
+        // 下载图片
+        [[SDWebImageManager sharedManager] downloadImageWithURL:url options:(0) progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            NSInteger percent = receivedSize * 100.0 / expectedSize;
+            NSLog(@"%ld%%", percent);
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            if (image != nil) {
+                if ([[NSThread currentThread] isMainThread]) {
+                    [self setImage:image];
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self setImage:image];
+                    });
+                }
+            }
+        }];
+    }
+}
+
 #pragma mark - 长按保存图片到相册
 
 - (void)longTapAction:(UILongPressGestureRecognizer *)tap {
-    NSLog(@"Long Tap.");
-    if (_imageView.image != nil) {
-        UIImageWriteToSavedPhotosAlbum(_imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    if (self.imageView.image != nil) {
+        UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
     }
 }
 
