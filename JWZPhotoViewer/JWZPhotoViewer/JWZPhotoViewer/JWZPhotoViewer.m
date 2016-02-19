@@ -36,44 +36,46 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
 @property (strong, nonatomic) IBOutlet UITapGestureRecognizer *twiceTap;
 @property (strong, nonatomic) IBOutlet UILongPressGestureRecognizer *longPress;
 
+@property (weak, nonatomic) IBOutlet UILabel *accessoryLabel;
+
 @end
 
 @implementation JWZPhotoViewer
 
 + (void)showFromViewController:(UIViewController *)viewController dataSource:(id<JWZPhotoViewerDataSource>)dataSource defaultIndex:(NSInteger)defaultIndex {
-    
+    JWZPhotoViewer *photoViewer = [[self alloc] init];
+    photoViewer.currentIndex                  = defaultIndex;
+    photoViewer.dataSource                    = dataSource;
+    photoViewer.modalPresentationStyle        = UIModalPresentationOverCurrentContext;
+    viewController.definesPresentationContext = YES;
+    [viewController presentViewController:photoViewer animated:NO completion:NULL];
 }
+
+#pragma mark - Controller Lifetime
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    NSLog(@"%s, %@", __func__, NSStringFromCGRect(self.view.bounds));
     
-    /**
-     *  长按手势和双击手势
-     */
+    //  手势
     self.centerPhotoView.imageView.userInteractionEnabled = YES;
     [self.tap requireGestureRecognizerToFail:self.twiceTap];
     
     if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(resoureViewForItemAtIndex:)]) {
-        UIView *senderView = [self.dataSource resoureViewForItemAtIndex:self.currentIndex];
-        CGRect rect = CGRectZero;
-        if (senderView != nil) {
-            UIWindow *window = senderView.window;
-            rect = [senderView.superview convertRect:senderView.frame toView:window];
-        }
+        CGRect rect = [self convertedRectFromRescourceViewAtIndex:self.currentIndex];
         self.animationImageView.frame = rect;
         self.view.backgroundColor = [UIColor clearColor];
         self.scrollView.alpha = 0;
         self.pageControl.alpha = 0;
         NSURL *url = [self.dataSource photoViewer:self thumbnailURLForItemAtIndex:self.currentIndex];
         [self.animationImageView sd_setImageWithURL:url];
-
     } else {
         self.animationImageView.alpha = 0;
         self.scrollView.alpha = 1.0;
     }
     self.pageControl.numberOfPages = [[self dataSource] numberOfItemsForPhotoViewer:self];
+    
+    // 目前就用一个简陋的提示框吧
+    self.accessoryLabel.alpha = 0;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,12 +85,12 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSLog(@"%s, %@", __func__, NSStringFromCGRect(self.view.bounds));
+    // NSLog(@"%s, %@", __func__, NSStringFromCGRect(self.view.bounds));
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSLog(@"%s, %@", __func__, NSStringFromCGRect(self.view.bounds));
+    // NSLog(@"%s, %@", __func__, NSStringFromCGRect(self.view.bounds));
     
     if (self.animationImageView.isHidden == NO) {
         [UIView animateWithDuration:kJWZPhotoViewAnimationDuration animations:^{
@@ -98,9 +100,11 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
             [self showPhotoAtIndex:self.currentIndex];
             [UIView animateWithDuration:kJWZPhotoViewAnimationDuration animations:^{
                 self.animationImageView.frame = self.centerPhotoView.imageView.frame;
-                self.animationImageView.alpha = 0;
-                self.scrollView.alpha         = 1.0;
+                self.animationImageView.image = self.centerPhotoView.imageView.image;
+            } completion:^(BOOL finished) {
                 self.pageControl.alpha        = 1.0;
+                self.scrollView.alpha         = 1.0;
+                self.animationImageView.alpha = 0;
             }];
         }];
     }
@@ -136,7 +140,7 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
     return _animationImageView;
 }
 
-#pragma mark - ScrollView Delegate
+#pragma mark - ScrollView 滚动代理
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self scrollViewDidEndScrollingAnimation:scrollView];
@@ -146,19 +150,17 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
     if (scrollView == _scrollView) {
         // 根据位置判断滚动方向
         JWZPhotoViewerScrollDirection scrollDirection = floor(scrollView.contentOffset.x / self.view.bounds.size.width) - 1;
-        
         if (scrollDirection != JWZPhotoViewerScrollNone) {
             // 计算出每张图片的索引
             NSInteger previousIndex = self.currentIndex;
             NSInteger currentIndex = [self indexWithPreviousIndex:previousIndex scrollDirection:scrollDirection];
-            
             // 展示图片
             [self showPhotoAtIndex:currentIndex];
         }
     }
 }
 
-#pragma mark - ScrollView 代理方法
+#pragma mark - ScrollView 缩放代理
 
 - (nullable UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     if (scrollView == self.centerPhotoView) {
@@ -201,9 +203,34 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
     self.scrollView.contentOffset = CGPointMake(self.view.bounds.size.width, 0);
 }
 
-- (NSInteger)indexWithPreviousIndex:(NSInteger)index scrollDirection:(JWZPhotoViewerScrollDirection)direction {
+/**
+ *  根据滚动前的 index 和滚动方向，计算现在的 index
+ *
+ *  @param index     滚动前的 index
+ *  @param direction 滚动方向
+ *
+ *  @return 滚动后的 index
+ */
+- (NSInteger)indexWithPreviousIndex:(NSInteger)previousIndex scrollDirection:(JWZPhotoViewerScrollDirection)direction {
     NSInteger count = [[self dataSource] numberOfItemsForPhotoViewer:self];
-    return ABS(index + direction + count) % count;
+    return ABS(previousIndex + direction + count) % count;
+}
+
+/**
+ *  将 RescourceView 的 frame 转换到 window 里
+ *
+ *  @param index RescourceView 的索引
+ *
+ *  @return CGRect
+ */
+- (CGRect)convertedRectFromRescourceViewAtIndex:(NSInteger)index {
+    UIView *senderView = [self.dataSource resoureViewForItemAtIndex:self.currentIndex];
+    CGRect rect = CGRectZero;
+    if (senderView != nil) {
+        UIWindow *window = senderView.window;
+        rect = [senderView.superview convertRect:senderView.frame toView:window];
+    }
+    return rect;
 }
 
 #pragma mark - Center View Tap Action
@@ -213,25 +240,23 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
         [self twiceTapAction:self.twiceTap];
     } else {
         if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(resoureViewForItemAtIndex:)]) {
-            UIView *senderView = [self.dataSource resoureViewForItemAtIndex:self.currentIndex];
-            if (senderView != nil) {
-                UIWindow *window = senderView.window;
-                // CGRect windowBounds = window.bounds;
-                CGRect rect = [senderView.superview convertRect:senderView.frame toView:window];
-                self.animationImageView.frame = self.centerPhotoView.imageView.frame;
-                self.animationImageView.alpha = 1.0;
-                self.scrollView.alpha = 0;
-                self.pageControl.alpha = 0;
-                [UIView animateWithDuration:kJWZPhotoViewAnimationDuration animations:^{
-                    self.view.backgroundColor = [UIColor clearColor];
-                    self.animationImageView.alpha = 0.0;
-                    self.animationImageView.frame = rect;
-                } completion:^(BOOL finished) {
-                    [self dismissViewControllerAnimated:NO completion:NULL];
-                }];
-            } else {
-                [self dismissViewControllerAnimated:NO completion:NULL];
+            CGRect rect = [self convertedRectFromRescourceViewAtIndex:self.currentIndex];
+            if (CGRectIsEmpty(rect)) {
+                rect.origin = self.view.center;
             }
+            self.animationImageView.frame = self.centerPhotoView.imageView.frame;
+            self.animationImageView.image = self.centerPhotoView.imageView.image;
+            self.animationImageView.alpha = 1.0;
+            self.scrollView.alpha         = 0;
+            self.pageControl.alpha        = 0;
+            [UIView animateWithDuration:kJWZPhotoViewAnimationDuration animations:^{
+                self.view.backgroundColor = [UIColor clearColor];
+                NSURL *url = [self.dataSource photoViewer:self thumbnailURLForItemAtIndex:self.currentIndex];
+                [self.animationImageView sd_setImageWithURL:url];
+                self.animationImageView.frame = rect;
+            } completion:^(BOOL finished) {
+                [self dismissViewControllerAnimated:NO completion:NULL];
+            }];
         } else {
             [self dismissViewControllerAnimated:NO completion:NULL];
         }
@@ -270,7 +295,7 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
 }
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo; {
-    NSLog(@"图片已经保存到相册。");
+    [self showMessage:@"图片已保存到相册" duration:2.0];
 }
 
 #pragma mark - 双击放大还原图片
@@ -309,6 +334,14 @@ typedef NS_ENUM(NSInteger, JWZPhotoViewerScrollDirection) {
             }];
         }
     }
+}
+
+- (void)showMessage:(NSString *)message duration:(NSTimeInterval)duration {
+    self.accessoryLabel.alpha = 1.0;
+    self.accessoryLabel.text = message;
+    [UIView animateWithDuration:duration animations:^{
+        self.accessoryLabel.alpha = 0.0;
+    }];
 }
 
 @end

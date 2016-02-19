@@ -77,12 +77,7 @@
 }
 
 - (void)sudokuView:(JWZSudokuView *)sudokuView didTouchOnImageView:(UIImageView *)imageView atIndex:(NSInteger)index {
-    JWZPhotoViewer *viewer = [[JWZPhotoViewer alloc] init];
-    viewer.currentIndex             = index;
-    viewer.dataSource               = self;
-    self.definesPresentationContext = YES;
-    viewer.modalPresentationStyle   = UIModalPresentationOverCurrentContext;
-    [self presentViewController:viewer animated:NO completion:NULL];
+    [JWZPhotoViewer showFromViewController:self dataSource:self defaultIndex:index];
 }
 
 @end

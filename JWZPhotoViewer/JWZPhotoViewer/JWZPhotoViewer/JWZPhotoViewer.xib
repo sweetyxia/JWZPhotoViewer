@@ -8,6 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JWZPhotoViewer">
             <connections>
+                <outlet property="accessoryLabel" destination="6B9-kO-dHJ" id="Btt-3h-EZu"/>
                 <outlet property="centerPhotoView" destination="hRl-id-Ua1" id="cmP-il-4PN"/>
                 <outlet property="leftPhotoView" destination="MCT-U4-z7u" id="lIt-go-fCN"/>
                 <outlet property="longPress" destination="D9F-Ax-ABy" id="Z51-2f-poz"/>
@@ -91,15 +92,33 @@
                         <action selector="pageControlValueChanged:" destination="-1" eventType="valueChanged" id="Eoo-wk-k3y"/>
                     </connections>
                 </pageControl>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="图片已保存到相册" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6B9-kO-dHJ">
+                    <rect key="frame" x="85" y="458" width="150" height="30"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="BQ3-vf-4zo"/>
+                        <constraint firstAttribute="height" constant="30" id="Jf5-tg-JHq"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </label>
             </subviews>
             <constraints>
                 <constraint firstItem="lI4-Nn-LO3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8Fv-ed-EEI"/>
                 <constraint firstItem="lI4-Nn-LO3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Fft-1k-Eeq"/>
                 <constraint firstItem="QAg-Ve-kP1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Mwv-NZ-eii"/>
                 <constraint firstAttribute="bottom" secondItem="lI4-Nn-LO3" secondAttribute="bottom" id="bVY-hF-0Ac"/>
+                <constraint firstItem="6B9-kO-dHJ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="c5W-fn-EtW"/>
                 <constraint firstAttribute="bottom" secondItem="QAg-Ve-kP1" secondAttribute="bottom" id="cho-po-AhX"/>
                 <constraint firstAttribute="trailing" secondItem="QAg-Ve-kP1" secondAttribute="trailing" id="jeX-Dy-Tfo"/>
                 <constraint firstAttribute="trailing" secondItem="lI4-Nn-LO3" secondAttribute="trailing" id="pfe-ff-siF"/>
+                <constraint firstItem="QAg-Ve-kP1" firstAttribute="top" secondItem="6B9-kO-dHJ" secondAttribute="bottom" constant="30" id="y5e-0i-owk"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="317" y="339"/>
@@ -109,7 +128,7 @@
                 <action selector="tapToDismissPhotoViewer:" destination="-1" id="kbL-jt-s5b"/>
             </connections>
         </tapGestureRecognizer>
-        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="1.5" id="D9F-Ax-ABy">
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="1" id="D9F-Ax-ABy">
             <connections>
                 <action selector="longPressAction:" destination="-1" id="0wQ-a4-nPG"/>
             </connections>
