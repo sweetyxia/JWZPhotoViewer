@@ -51,7 +51,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </scrollView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="D2t-R9-KEw" firstAttribute="height" secondItem="MCT-U4-z7u" secondAttribute="height" id="1Ql-M3-jWY"/>
                                 <constraint firstItem="hRl-id-Ua1" firstAttribute="top" secondItem="Agx-O3-W4w" secondAttribute="top" id="5EN-bt-1De"/>
