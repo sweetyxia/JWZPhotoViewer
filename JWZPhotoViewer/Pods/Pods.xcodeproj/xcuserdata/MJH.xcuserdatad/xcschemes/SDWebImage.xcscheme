@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AF46AB7D1C4B937600D87A52"
-               BuildableName = "JWZPhotoViewer.app"
-               BlueprintName = "JWZPhotoViewer"
-               ReferencedContainer = "container:JWZPhotoViewer.xcodeproj">
+               BlueprintIdentifier = "CAEA868BA328BE96EDD68B17F7660DB0"
+               BuildableName = "libSDWebImage.a"
+               BlueprintName = "SDWebImage"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AF46AB7D1C4B937600D87A52"
-            BuildableName = "JWZPhotoViewer.app"
-            BlueprintName = "JWZPhotoViewer"
-            ReferencedContainer = "container:JWZPhotoViewer.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,16 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AF46AB7D1C4B937600D87A52"
-            BuildableName = "JWZPhotoViewer.app"
-            BlueprintName = "JWZPhotoViewer"
-            ReferencedContainer = "container:JWZPhotoViewer.xcodeproj">
+            BlueprintIdentifier = "CAEA868BA328BE96EDD68B17F7660DB0"
+            BuildableName = "libSDWebImage.a"
+            BlueprintName = "SDWebImage"
+            ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -70,16 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AF46AB7D1C4B937600D87A52"
-            BuildableName = "JWZPhotoViewer.app"
-            BlueprintName = "JWZPhotoViewer"
-            ReferencedContainer = "container:JWZPhotoViewer.xcodeproj">
+            BlueprintIdentifier = "CAEA868BA328BE96EDD68B17F7660DB0"
+            BuildableName = "libSDWebImage.a"
+            BlueprintName = "SDWebImage"
+            ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
