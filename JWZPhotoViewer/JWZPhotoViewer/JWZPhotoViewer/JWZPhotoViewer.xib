@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -10,10 +10,12 @@
             <connections>
                 <outlet property="centerPhotoView" destination="hRl-id-Ua1" id="cmP-il-4PN"/>
                 <outlet property="leftPhotoView" destination="MCT-U4-z7u" id="lIt-go-fCN"/>
+                <outlet property="longPress" destination="D9F-Ax-ABy" id="Z51-2f-poz"/>
                 <outlet property="pageControl" destination="QAg-Ve-kP1" id="VF7-n6-khr"/>
                 <outlet property="rightPhotoView" destination="D2t-R9-KEw" id="yP0-95-eAt"/>
                 <outlet property="scrollView" destination="lI4-Nn-LO3" id="GT1-OJ-0FN"/>
                 <outlet property="tap" destination="vhH-SM-6xS" id="NDe-B0-HGE"/>
+                <outlet property="twiceTap" destination="yeE-0y-QgM" id="wFt-N2-Nef"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="wrapperView" destination="Agx-O3-W4w" id="k5q-3S-JOn"/>
             </connections>
@@ -37,7 +39,10 @@
                                     <rect key="frame" x="320" y="0.0" width="320" height="568"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <connections>
+                                        <outlet property="delegate" destination="-1" id="B3A-Yv-6lA"/>
                                         <outletCollection property="gestureRecognizers" destination="vhH-SM-6xS" appends="YES" id="ReL-bO-2NZ"/>
+                                        <outletCollection property="gestureRecognizers" destination="D9F-Ax-ABy" appends="YES" id="oDL-VI-Yqx"/>
+                                        <outletCollection property="gestureRecognizers" destination="yeE-0y-QgM" appends="YES" id="s8j-Y1-iCI"/>
                                     </connections>
                                 </scrollView>
                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D2t-R9-KEw" customClass="JWZPhotoView">
@@ -82,9 +87,11 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="6bh-tT-4i2"/>
                     </constraints>
+                    <connections>
+                        <action selector="pageControlValueChanged:" destination="-1" eventType="valueChanged" id="Eoo-wk-k3y"/>
+                    </connections>
                 </pageControl>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="lI4-Nn-LO3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8Fv-ed-EEI"/>
                 <constraint firstItem="lI4-Nn-LO3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Fft-1k-Eeq"/>
@@ -100,6 +107,16 @@
         <tapGestureRecognizer id="vhH-SM-6xS">
             <connections>
                 <action selector="tapToDismissPhotoViewer:" destination="-1" id="kbL-jt-s5b"/>
+            </connections>
+        </tapGestureRecognizer>
+        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="1.5" id="D9F-Ax-ABy">
+            <connections>
+                <action selector="longPressAction:" destination="-1" id="0wQ-a4-nPG"/>
+            </connections>
+        </pongPressGestureRecognizer>
+        <tapGestureRecognizer numberOfTapsRequired="2" id="yeE-0y-QgM">
+            <connections>
+                <action selector="twiceTapAction:" destination="-1" id="VJO-LH-VN3"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

@@ -8,30 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class JWZPhotoView;
+@interface JWZPhotoView : UIScrollView
 
-@protocol JWZPhotoViewDelegate <NSObject>
-
-- (BOOL)photoViewShouldSaveImageToAlbum:(JWZPhotoView *)photoView;
-- (void)photoViewDidSaveImageToAlbum:(JWZPhotoView *)photoView;
-
-@end
-
-@interface JWZPhotoView : UIScrollView {
-    @public
-    UITapGestureRecognizer *_twiceTap;
-    UILongPressGestureRecognizer *_longTap;
-}
-
-@property (nonatomic, weak) id<JWZPhotoViewDelegate> imageWatcher;
-
-/**
- *  当前显示的图片
- *
- *  @return 图片
- */
-- (UIImage *)image;
-- (void)setImage:(UIImage *)image;
+@property (nonatomic, strong, readonly) UIImageView *imageView;
 
 /**
  *  通过 URL 设置要显示的图片。

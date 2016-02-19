@@ -54,6 +54,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (UIView *)resoureViewForItemAtIndex:(NSInteger)index {
+    NSArray *array = [self.sudokuView allImageViews];
+    if (index < array.count) {
+        return [array objectAtIndex:index];
+    }
+    return nil;
+}
 
 - (NSInteger)numberOfItemsForPhotoViewer:(JWZPhotoViewer *)photoViewer {
     return self.dataArray.count;
@@ -71,7 +78,7 @@
 
 - (void)sudokuView:(JWZSudokuView *)sudokuView didTouchOnImageView:(UIImageView *)imageView atIndex:(NSInteger)index {
     JWZPhotoViewer *viewer = [[JWZPhotoViewer alloc] init];
-    viewer.defaultIndex             = index;
+    viewer.currentIndex             = index;
     viewer.dataSource               = self;
     self.definesPresentationContext = YES;
     viewer.modalPresentationStyle   = UIModalPresentationOverCurrentContext;
